@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg: #0e0e11;
+  --bg: #000000;
   --text: #eaeaea;
   --accent: #f9c74f;
   --card: #1a1a1e;
@@ -22,6 +22,20 @@ body {
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
+  padding: 2rem;
+}
+
+.bg-animation {
+  position: fixed;
+  inset: 0;
+  background-color: #121212;
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 0;
+  opacity: 1;
+  pointer-events: none;
 }
 
 .container {
@@ -51,81 +65,43 @@ h1 {
   color: #aaa;
 }
 
-.join-btn {
+.btn {
   display: inline-block;
-  margin-top: 1rem;
+  margin: 0.5rem;
   padding: 0.8rem 1.6rem;
   background: var(--accent);
-  color: #000;
+  color: #000000;
   font-weight: bold;
   text-decoration: none;
+  border: none;
   border-radius: var(--radius);
   transition: background var(--transition), transform var(--transition);
+  cursor: pointer;
 }
-.join-btn:hover {
-  background: #ffe382;
+.btn {
+  background: #246caf;
   transform: scale(1.05);
 }
 
-.rules h2,
-.gallery h2 {
-  margin-bottom: 1rem;
-  font-size: 1.6rem;
-  text-align: center;
-}
-
-.rules ul {
-  list-style: none;
-  padding-left: 0;
-}
-.rules li {
-  background: var(--hover);
-  padding: 1rem;
+.btn-1 {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: .8rem .6rem;
+  background: var(--accent);
+  color: #000000;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
   border-radius: var(--radius);
-  margin-bottom: 1rem;
-  transition: transform var(--transition), background var(--transition);
+  transition: background var(--transition), transform var(--transition);
+  cursor: pointer;
 }
-.rules li:hover {
-  transform: scale(1.03);
-  background: #33333a;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-}
-.gallery-grid img {
-  width: 100%;
-  border-radius: var(--radius);
-  transition: transform var(--transition);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.gallery-grid img:hover {
+.btn-1 {
+  background: #d84242;
   transform: scale(1.05);
 }
 
-footer {
-  text-align: center;
-  margin-top: 2rem;
-  color: #777;
-  font-size: 0.9rem;
-}
-
-/* === Background Animation === */
-.bg-animation {
-  position: fixed;
-  inset: 0;
-  background-color: #121212;
-  background-image:
-    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 20px 20px;
-  z-index: 0;
-  opacity: 1;
-  pointer-events: none;
-} 
-
+/* Карусель */
 .carousel {
   position: relative;
   width: 100%;
@@ -152,4 +128,99 @@ footer {
 @keyframes scroll-loop {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* Карусель на фоне */
+.carousel-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.15; /* Прозрачность, чтобы не мешала контенту */
+  pointer-events: none; /* Чтобы не мешала кликам */
+  display: flex;
+  align-items: flex-start; /* Картинки будут ближе к верху */
+  justify-content: center;
+}
+
+.carousel-bg .carousel-track {
+  display: flex;
+  gap: 40px;
+  animation: carousel-loop 30s linear infinite reverse; /* Изменено направление на слева направо */
+}
+
+.carousel-bg img {
+  height: auto;
+  max-height: 400px; /* Ограничение высоты, чтобы не растягивались */
+  width: auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+@keyframes carousel-loop {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+.carousel-bg .carousel-track {
+  position: relative;
+}
+
+.carousel-bg .carousel-track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+}
+
+/* Модальное окно */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background-color: #1a1a1e;
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  color: var(--text);
+  line-height: 1.6;
+  position: relative;
+}
+
+.close {
+  color: #ccc;
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #fff;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #777;
+  font-size: 0.9rem;
 }
